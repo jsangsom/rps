@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Rock Paper Scissors</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <script>
+
+     const CHOICES = ["rock", "paper", "scissors"];
+
+     const RULES = {"rock": "scissors", "paper": "rock", "scissors": "paper"};
+
+     function getCpuChoice() {
+
+         return CHOICES[Math.floor(Math.random() * CHOICES.length)];
+     }
+
+     function promptPlayer() {
+         text = prompt("Play rock paper or scissors:");
+
+         if (text == null) {
+             return undefined;
+         }
+         
+         let choice;
+         
+         for (let i = 0; i < CHOICES.length; i++) {
+             if (text.toLowerCase() == CHOICES[i]) {
+                 choice = CHOICES[i];
+             }
+         }
+
+         return choice;
+     }
+
+     function winOrLoseOrTie(p1, c1) {
+
+         if (p1 == c1) {
+             return undefined; // Tie
+         }
+
+         return c1 == RULES[p1] ? true : false;
+     }
+     
+     function round() {
+
+         let cpuSelection = getCpuChoice();
+         let playerSelection;
+         
+         do {
+            playerSelection = promptPlayer();
+         }
+         while (playerSelection == undefined);
+
+         let result = winOrLoseOrTie(playerSelection, cpuSelection);
+
+         if (result === true) {
+             console.log(`You Win! ${playerSelection} beats ${cpuSelection}`);
+         } else if (result === false) {
+             console.log(`You Lose! ${cpuSelection} beats ${playerSelection}`);
+         } else {
+             console.log("Tie!")
+         }
+
+         return result;
+     }
+     
+     function main() {
+         let playerScore = 0;
+         let cpuScore = 0;
+         let total = 0;
+         let c;
+         
+         do {
+             c = round();
+             if (c == true) {
+                 playerScore += 1;
+             } else if (c == false) {
+                 cpuScore += 1;
+             }
+             
+             total += 1;
+         }
+         while (total != 5);
+
+         console.log(`Player: ${playerScore}  CPU: ${cpuScore}`);
+     }
+
+     main();
+     
+    </script>
+  </body>
+</html>
