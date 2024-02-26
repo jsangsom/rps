@@ -5,33 +5,27 @@
     <meta charset="utf-8" />
   </head>
   <body>
+
+    
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+
+    <div id="container">
+    </div>
+    
     <script>
 
      const CHOICES = ["rock", "paper", "scissors"];
 
      const RULES = {"rock": "scissors", "paper": "rock", "scissors": "paper"};
 
+     let playerScore = 0;
+     let cpuScore = 0;
+
      function getCpuChoice() {
 
          return CHOICES[Math.floor(Math.random() * CHOICES.length)];
-     }
-
-     function promptPlayer() {
-         text = prompt("Play rock paper or scissors:");
-
-         if (text == null) {
-             return undefined;
-         }
-         
-         let choice;
-         
-         for (let i = 0; i < CHOICES.length; i++) {
-             if (text.toLowerCase() == CHOICES[i]) {
-                 choice = CHOICES[i];
-             }
-         }
-
-         return choice;
      }
 
      function winOrLoseOrTie(p1, c1) {
@@ -42,52 +36,64 @@
 
          return c1 == RULES[p1] ? true : false;
      }
-     
-     function round() {
 
-         let cpuSelection = getCpuChoice();
-         let playerSelection;
-         
-         do {
-            playerSelection = promptPlayer();
-         }
-         while (playerSelection == undefined);
+     function playRound(playerSelection) {
+         const cpuSelection = getCpuChoice();
+
+         console.log(cpuSelection);
 
          let result = winOrLoseOrTie(playerSelection, cpuSelection);
-
+         
          if (result === true) {
-             console.log(`You Win! ${playerSelection} beats ${cpuSelection}`);
+             playerScore += 1;
+             div.textContent = `You Win! ${playerSelection} beats ${cpuSelection}`;
          } else if (result === false) {
-             console.log(`You Lose! ${cpuSelection} beats ${playerSelection}`);
+             cpuScore += 1;
+             div.textContent = `You Lose! ${cpuSelection} beats ${playerSelection}`;
          } else {
-             console.log("Tie!")
+             div.textContent = "Tie!";
          }
 
+         score.textContent = `Player: ${playerScore} CPU: ${cpuScore}`;
+         
+         if (playerScore == 5) {
+             div.textContent = "YOU WIN";
+             playerScore = 0;
+             cpuScore = 0;
+         } else if (cpuScore == 5) {
+             div.textContent = "YOU LOSE";
+             playerScore = 0;
+             cpuScore = 0;
+         }
+         
          return result;
      }
+
      
-     function main() {
-         let playerScore = 0;
-         let cpuScore = 0;
-         let total = 0;
-         let c;
-         
-         do {
-             c = round();
-             if (c == true) {
-                 playerScore += 1;
-             } else if (c == false) {
-                 cpuScore += 1;
-             }
-             
-             total += 1;
-         }
-         while (total != 5);
 
-         console.log(`Player: ${playerScore}  CPU: ${cpuScore}`);
-     }
+     document.getElementById("rock").addEventListener(
+         "click", () => { playRound("rock"); });
+     document.getElementById("paper").addEventListener(
+         "click", () => { playRound("paper"); });
+     document.getElementById("scissors").addEventListener(
+         "click", () => { playRound("scissors"); });
 
-     main();
+
+     const container = document.querySelector('#container');
+     const div = document.createElement('div');
+     div.style.cssText = "margin-top: 40px; background-color: pink; color: red;"
+     div.classList.add('div');
+     div.textContent = "Start!";
+
+     container.appendChild(div);
+
+     const score = document.createElement('div');
+     score.style.cssText = "margin-top: 40px; background-color: black; color: white;"
+     score.classList.add('score');
+     score.textContent = `Player: ${playerScore} CPU: ${cpuScore}`;
+
+     container.appendChild(score);
+     
      
     </script>
   </body>
